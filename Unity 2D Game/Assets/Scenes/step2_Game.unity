@@ -442,7 +442,7 @@ PrefabInstance:
     - target: {fileID: 9214861552188894347, guid: 398f9ce3d143ac94fb75a205c91b3f31,
         type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9214861552188894347, guid: 398f9ce3d143ac94fb75a205c91b3f31,
         type: 3}
@@ -974,7 +974,7 @@ PrefabInstance:
     - target: {fileID: 956493723320865010, guid: 9e59015f844066e458216aedc290c796,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6401980922673507984, guid: 9e59015f844066e458216aedc290c796,
         type: 3}
@@ -1324,6 +1324,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &905798786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 905798788}
+  - component: {fileID: 905798787}
+  m_Layer: 0
+  m_Name: TetrisManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &905798787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905798786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4102ef980270d644a83fd45d4c4b9727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallduration: 1.5
+  scores: 0
+  bestscores: 0
+  Level: 1
+  goend: {fileID: 0}
+  brickdropsound: {fileID: 0}
+  movedsound: {fileID: 0}
+  removedsound: {fileID: 0}
+  gameoversound: {fileID: 0}
+--- !u!4 &905798788
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905798786}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1100344902
 GameObject:

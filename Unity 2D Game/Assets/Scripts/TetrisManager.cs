@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class TetrisManager : MonoBehaviour
 {
-    
+    #region
+    //field欄位
     [Header("fall duration"),Range(0.1f,3)]
-    public float fallduration = 1.5f;//掉落時間
+    public float falltime = 1.5f;//掉落時間
     
     [Header("Current scores")]
     public int scores;//目前分數
@@ -29,4 +31,48 @@ public class TetrisManager : MonoBehaviour
     
     public AudioClip gameoversound;//遊戲結束音效
 
+    #endregion
+
+    #region
+    //事件
+    #endregion
+
+
+
+    #region
+    //方法
+
+    private void addbricks()//生成俄羅斯方塊
+    {
+
+    }
+
+    public void addscores(int Scores)//添加分數
+    {
+
+    }
+
+    private void gameduration()//遊戲時間
+    {
+
+    }
+
+    private void gameover()//遊戲結束
+    {
+
+    }
+
+    public void restart()//重新遊戲
+    {
+
+    }
+
+    public void leavegame()//離開遊戲
+    {
+
+    }
+
+    #endregion
+
 }
+

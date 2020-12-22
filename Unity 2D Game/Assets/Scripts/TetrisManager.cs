@@ -76,26 +76,31 @@ public class TetrisManager : MonoBehaviour
             if (timer >= falltime) //寫判斷式
             {
                 timer = 0;
-                currentTetris.anchoredPosition -= new Vector2(0, 50);//y,x
+                currentTetris.anchoredPosition -= new Vector2(0, 10);//y,x
             }
 
-            //按下鍵盤D或右，往右50，||代表或者
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                currentTetris.anchoredPosition += new Vector2(50, 0);
-            }
+            #region 按鍵盤控制俄羅斯方塊上下及旋轉與加速
 
-            //按下鍵盤A或左，往左50
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            //右邊範圍限制
+            if (currentTetris.anchoredPosition.x < 150)
             {
-                currentTetris.anchoredPosition -= new Vector2(50, 0);
+                //按下鍵盤D或右，往右50，||代表或者
+                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    currentTetris.anchoredPosition += new Vector2(10, 0);
+                }
             }
-
-            //按下鍵盤S或下，往下50
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+           
+            //左邊範圍限制
+            if(currentTetris.anchoredPosition.x > -190)
             {
-                currentTetris.anchoredPosition -= new Vector2(0, 50);
+                //按下鍵盤A或左，往左50
+                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    currentTetris.anchoredPosition -= new Vector2(10, 0);
+                }
             }
+            
 
             //按下鍵盤w或上，逆時針旋轉90度
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
@@ -103,8 +108,25 @@ public class TetrisManager : MonoBehaviour
                 currentTetris.eulerAngles += new Vector3(0, 0, 90);
             }
 
+            //按下鍵盤S或下，加速，沒按的話恢復
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            {
+                falltime = 0.2f;
+            }
+            else
+            {
+                falltime = 1.5f;
+            }
+
+            #endregion
+
+            if (currentTetris.anchoredPosition.y==-180)
+            {
+                StartGame();
+            }
+
         }
-        
+
     }
 
     /// <summary>

@@ -36,7 +36,16 @@ public class TetrisManager : MonoBehaviour
 
     [Header("畫布")]
     public Transform traCanvas;//告訴程式有一個畫布
+
+    private int indexNext;//下一個俄羅斯方塊編號
+
+    private RectTransform currentTetris;//目前俄羅斯方塊
+
+    private float timer;//計時器
+    
     #endregion
+
+
 
     #region
     //事件
@@ -47,10 +56,55 @@ public class TetrisManager : MonoBehaviour
     #region
     //方法
 
-    public int indexNext;
+
     private void Start()
     {
         addbricks();
+    }
+
+    private void Update()
+    {
+        ControlTertis();
+    }
+
+    private void ControlTertis()
+    {
+        if(currentTetris)//當有現在的俄羅斯方塊才會執行該段程式
+        {
+            timer += Time.deltaTime;//timer累加時間
+
+            if (timer >= falltime) //寫判斷式
+            {
+                timer = 0;
+                currentTetris.anchoredPosition -= new Vector2(0, 50);//y,x
+            }
+
+            //按下鍵盤D或右，往右50，||代表或者
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                currentTetris.anchoredPosition += new Vector2(50, 0);
+            }
+
+            //按下鍵盤A或左，往左50
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                currentTetris.anchoredPosition -= new Vector2(50, 0);
+            }
+
+            //按下鍵盤S或下，往下50
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                currentTetris.anchoredPosition -= new Vector2(0, 50);
+            }
+
+            //按下鍵盤w或上，逆時針旋轉90度
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {   //在Unity要抓rotation用以eulerAngles控制,單位才是角度
+                currentTetris.eulerAngles += new Vector3(0, 0, 90);
+            }
+
+        }
+        
     }
 
     /// <summary>
@@ -85,13 +139,16 @@ public class TetrisManager : MonoBehaviour
         //語法：GetComponent<任何元件>()
         //<>指<T>泛型，指所有類型
         //語法：目前俄羅斯方塊，取得元件<介面變形>().座標=二維向量(Vx,Vy);
-        current.GetComponent<RectTransform>().anchoredPosition = new Vector2(-648, 221);
+        current.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 250);
 
         //2.上一顆隱藏
         tetris.SetActive(false);
 
         //3.隨機取下一個
         addbricks();
+
+        //將生成的俄羅斯方塊 RectTransform元件儲存
+        currentTetris = current.GetComponent<RectTransform>();
 
     }
 

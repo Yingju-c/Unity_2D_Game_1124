@@ -37,6 +37,21 @@ public class TetrisManager : MonoBehaviour
     [Header("畫布")]
     public Transform traCanvas;//告訴程式有一個畫布
 
+    [Header("生成的起始位置")]
+    public Vector2[] posSpawn = //[]為陣列的寫法
+    {
+        new Vector2(0,207),
+        new Vector2(18.61f,206.27f),
+        new Vector2(0.3f,206.4f),
+        new Vector2(-18.02f,225.4f),
+        new Vector2(38.3f,226.5f),
+        new Vector2(2,224.1f),
+        new Vector2(2,229),
+        new Vector2(1,266),
+        new Vector2(-0.9f,188),
+        new Vector2(1,225)
+    };
+
     private int indexNext;//下一個俄羅斯方塊編號
 
     private RectTransform currentTetris;//目前俄羅斯方塊
@@ -81,8 +96,13 @@ public class TetrisManager : MonoBehaviour
 
             #region 按鍵盤控制俄羅斯方塊上下及旋轉與加速
 
-            //右邊範圍限制
-            if (currentTetris.anchoredPosition.x < 150)
+            //取得 目前俄羅斯方塊的 Tetris腳本
+            Tetris tetris = currentTetris.GetComponent<Tetris>();
+
+            //右邊範圍限制：以座標控制
+            //if (currentTetris.anchoredPosition.x < 190)
+            //改成 如果 目前俄羅斯方塊 沒有 碰到右邊牆壁，!為沒有
+            if(!tetris.wallRight)
             {
                 //按下鍵盤D或右，往右50，||代表或者
                 if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
@@ -161,7 +181,7 @@ public class TetrisManager : MonoBehaviour
         //語法：GetComponent<任何元件>()
         //<>指<T>泛型，指所有類型
         //語法：目前俄羅斯方塊，取得元件<介面變形>().座標=二維向量(Vx,Vy);
-        current.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 250);
+        current.GetComponent<RectTransform>().anchoredPosition = posSpawn[indexNext];
 
         //2.上一顆隱藏
         tetris.SetActive(false);

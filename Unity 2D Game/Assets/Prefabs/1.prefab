@@ -151,5 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length0: 0.5
   length90: 0.5
-  length: 0.5
   wallRight: 0
+  wallLeft: 0
+  wallBottom: 0

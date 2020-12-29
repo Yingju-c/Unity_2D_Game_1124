@@ -40,16 +40,16 @@ public class TetrisManager : MonoBehaviour
     [Header("生成的起始位置")]
     public Vector2[] posSpawn = //[]為陣列的寫法
     {
-        new Vector2(0,207),
-        new Vector2(18.61f,206.27f),
-        new Vector2(0.3f,206.4f),
-        new Vector2(-18.02f,225.4f),
-        new Vector2(38.3f,226.5f),
-        new Vector2(2,224.1f),
-        new Vector2(2,229),
-        new Vector2(1,266),
-        new Vector2(-0.9f,188),
-        new Vector2(1,225)
+        new Vector2(0,205),
+        new Vector2(18.61f,205),
+        new Vector2(0.3f,205),
+        new Vector2(-2,224),
+        new Vector2(38.3f,225),
+        new Vector2(2,223),
+        new Vector2(2,228),
+        new Vector2(-1,223),
+        new Vector2(1,223),
+        new Vector2(1,265)
     };
 
     private int indexNext;//下一個俄羅斯方塊編號
@@ -91,7 +91,7 @@ public class TetrisManager : MonoBehaviour
             if (timer >= falltime) //寫判斷式
             {
                 timer = 0;
-                currentTetris.anchoredPosition -= new Vector2(0, 10);//y,x
+                currentTetris.anchoredPosition -= new Vector2(0, 36);//x,y
             }
 
             #region 按鍵盤控制俄羅斯方塊上下及旋轉與加速
@@ -107,17 +107,20 @@ public class TetrisManager : MonoBehaviour
                 //按下鍵盤D或右，往右50，||代表或者
                 if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
                 {
-                    currentTetris.anchoredPosition += new Vector2(10, 0);
+                    currentTetris.anchoredPosition += new Vector2(36, 0);
+                    //36=30方塊+6間距
                 }
             }
-           
+
             //左邊範圍限制
-            if(currentTetris.anchoredPosition.x > -190)
+            //if(currentTetris.anchoredPosition.x > -190)
+            //改成 如果 目前俄羅斯方塊 沒有 碰到右邊牆壁，!為沒有
+            if (!tetris.wallLeft)
             {
                 //按下鍵盤A或左，往左50
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
                 {
-                    currentTetris.anchoredPosition -= new Vector2(10, 0);
+                    currentTetris.anchoredPosition -= new Vector2(36, 0);
                 }
             }
             
@@ -131,16 +134,18 @@ public class TetrisManager : MonoBehaviour
             //按下鍵盤S或下，加速，沒按的話恢復
             if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
             {
-                falltime = 0.2f;
+                falltime = 0.1f;
             }
             else
             {
                 falltime = 1.5f;
             }
 
+
             #endregion
 
-            if (currentTetris.anchoredPosition.y==-180)
+            //if (currentTetris.anchoredPosition.y==-173.5)
+            if(tetris.wallBottom)
             {
                 StartGame();
             }
@@ -156,7 +161,8 @@ public class TetrisManager : MonoBehaviour
     private void addbricks()//生成俄羅斯方塊
     {
         //語法：下一顆編號=隨機 的 範圍(最小，最大)
-        indexNext =Random.Range(0, 11);//整數最大不包括
+        indexNext =Random.Range(0, 10);//整數最大不包括
+        //indexNext = 0;//測試用
         //語法：下一顆俄羅斯方塊的區域 的子物件轉成遊戲物件 的狀態 打勾
         traNextArea.GetChild(indexNext).gameObject.SetActive(true);
     }
@@ -181,6 +187,7 @@ public class TetrisManager : MonoBehaviour
         //語法：GetComponent<任何元件>()
         //<>指<T>泛型，指所有類型
         //語法：目前俄羅斯方塊，取得元件<介面變形>().座標=二維向量(Vx,Vy);
+        //以Unity給的面板數字為主
         current.GetComponent<RectTransform>().anchoredPosition = posSpawn[indexNext];
 
         //2.上一顆隱藏

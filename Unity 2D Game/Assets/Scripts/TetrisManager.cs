@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections; //引用系統.集合API-協同程序
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,22 +34,22 @@ public class TetrisManager : MonoBehaviour
     [Header("下一個俄羅斯方塊區域")]
     public Transform traNextArea;//Transform非靜態寫法
 
-    [Header("畫布")]
-    public Transform traCanvas;//告訴程式有一個畫布
+    [Header("生成俄羅斯方塊的父物件")]
+    public Transform traTetrisParent;//告訴程式有一個畫布
 
     [Header("生成的起始位置")]
     public Vector2[] posSpawn = //[]為陣列的寫法
     {
-        new Vector2(0,205),
-        new Vector2(18.61f,205),
-        new Vector2(0.3f,205),
-        new Vector2(-2,224),
-        new Vector2(38.3f,225),
-        new Vector2(2,223),
-        new Vector2(2,228),
-        new Vector2(-1,223),
-        new Vector2(1,223),
-        new Vector2(1,265)
+        new Vector2(0,206),
+        new Vector2(18,206),
+        new Vector2(0,206),
+        new Vector2(16,224),
+        new Vector2(0,224),
+        new Vector2(0,224),
+        new Vector2(0,224),
+        new Vector2(0,224),
+        new Vector2(0,224),
+        new Vector2(0,260)
     };
 
     private int indexNext;//下一個俄羅斯方塊編號
@@ -80,6 +80,13 @@ public class TetrisManager : MonoBehaviour
     private void Update()
     {
         ControlTertis();
+
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            //語法：啟動協同程序(協同方法());
+            StartCoroutine(ShakeEffect());
+        }
+
     }
 
     private void ControlTertis()
@@ -123,13 +130,18 @@ public class TetrisManager : MonoBehaviour
                     currentTetris.anchoredPosition -= new Vector2(36, 0);
                 }
             }
-            
 
-            //按下鍵盤w或上，逆時針旋轉90度
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {   //在Unity要抓rotation用以eulerAngles控制,單位才是角度
-                currentTetris.eulerAngles += new Vector3(0, 0, 90);
+            if (tetris.canRotate) //如果俄羅斯方塊可旋轉
+            {
+                //按下鍵盤w或上，逆時針旋轉90度
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                {   //在Unity要抓rotation用以eulerAngles控制,單位才是角度
+                    currentTetris.eulerAngles += new Vector3(0, 0, 90);
+
+                    tetris.Offset();
+                }
             }
+            
 
             //按下鍵盤S或下，加速，沒按的話恢復
             if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
@@ -162,7 +174,7 @@ public class TetrisManager : MonoBehaviour
     {
         //語法：下一顆編號=隨機 的 範圍(最小，最大)
         indexNext =Random.Range(0, 10);//整數最大不包括
-        //indexNext = 0;//測試用
+        //indexNext = 9;//測試用
         //語法：下一顆俄羅斯方塊的區域 的子物件轉成遊戲物件 的狀態 打勾
         traNextArea.GetChild(indexNext).gameObject.SetActive(true);
     }
@@ -181,7 +193,7 @@ public class TetrisManager : MonoBehaviour
         //並生成物件
         //語法：Instantiate(生成命名，置入哪個父物件)
         //告訴程式這是目前的俄羅斯方塊
-        GameObject current = Instantiate(tetris, traCanvas);
+        GameObject current = Instantiate(tetris, traTetrisParent);
         //API:GetComponent取得元件
         //API:anchoredPosition座標
         //語法：GetComponent<任何元件>()
@@ -225,6 +237,34 @@ public class TetrisManager : MonoBehaviour
 
     public void leavegame()//離開遊戲
     {
+
+    }
+
+    /// <summary>
+    /// 震動效果，協同程序-傳回類型-時間
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator ShakeEffect()
+    {
+        //print("start");
+        //可重複寫等待幾秒
+        //yield return new WaitForSeconds(0.1f);
+        //print("one second later...");
+
+        RectTransform rect = traTetrisParent.GetComponent<RectTransform>();
+
+        //等待秒數0.05秒
+        float interval = 0.05f;
+
+        //晃動效果：向上30 0 20 0
+        rect.anchoredPosition += Vector2.up * 30;
+        yield return new WaitForSeconds(interval);
+        rect.anchoredPosition = Vector2.zero;
+        yield return new WaitForSeconds(interval);
+        rect.anchoredPosition += Vector2.up * 20;
+        yield return new WaitForSeconds(interval);
+        rect.anchoredPosition = Vector2.zero;
+        yield return new WaitForSeconds(interval);
 
     }
 

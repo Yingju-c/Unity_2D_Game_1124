@@ -12,11 +12,37 @@ public class Tetris : MonoBehaviour
     [Header("旋轉位移上下")]
     public int offsetY;
 
+    [Header("是否能旋轉")]
+    public float lengthRotate0l;
+    public float lengthRotate0r;
+    public float lengthRotate90l;
+    public float lengthRotate90r;
+
     /// <summary>
-    /// 紀錄目前射線長度
+    /// 紀錄目前射線長度，呼叫長度
     /// </summary>
     private float length;
     private float lengthdown;
+
+    private float lengthRotateR;
+    private float lengthRotateL;
+
+    /// <summary>
+    /// 是否碰到右邊牆壁，是打勾，否取消打勾
+    /// </summary>
+    public bool wallRight;
+    public bool wallLeft;
+    public bool wallBottom;
+
+    /// <summary>
+    /// 是否能旋轉
+    /// </summary>
+    public bool canRotate = true;
+
+    /// <summary>
+    /// 寫位移用的
+    /// </summary>
+    private RectTransform rect;
 
     /// <summary>
     /// ODG為繪製圖飾，繪製一條線讓其判定牆在哪
@@ -45,6 +71,13 @@ public class Tetris : MonoBehaviour
             Gizmos.color = Color.magenta;//圖示的顏色
             Gizmos.DrawRay(transform.position, -Vector3.up * length90);//圖示的繪製射線(起點，方向)
 
+            //設定旋轉
+            lengthRotateL = lengthRotate0l;
+            lengthRotateR = lengthRotate0r;
+            Gizmos.color = Color.blue;//圖示的顏色
+            Gizmos.DrawRay(transform.position, Vector3.right * lengthRotate0l);//圖示的繪製射線(起點，方向)
+            Gizmos.DrawRay(transform.position, Vector3.right * lengthRotate0r);//圖示的繪製射線(起點，方向)
+
         }
 
         else if (Z == 90 || Z == 270)
@@ -59,14 +92,24 @@ public class Tetris : MonoBehaviour
             lengthdown = length0;//向下的初始值，是角度0的長度
             Gizmos.color = Color.magenta;
             Gizmos.DrawRay(transform.position, -Vector3.up * length0);
+
+            //設定旋轉
+            lengthRotateL = lengthRotate90l;
+            lengthRotateR = lengthRotate90r;
+            Gizmos.color = Color.blue;//圖示的顏色
+            Gizmos.DrawRay(transform.position, Vector3.right * lengthRotate90l);//圖示的繪製射線(起點，方向)
+            Gizmos.DrawRay(transform.position, Vector3.right * lengthRotate90r);//圖示的繪製射線(起點，方向)
+
         }
-        
+
     }
 
     private void Start()
     {
         //儲存遊戲開始角度是0的長度
         length = length0;
+
+        rect = GetComponent<RectTransform>();
     }
 
     private void Update()
@@ -74,12 +117,6 @@ public class Tetris : MonoBehaviour
         CheckWall();
     }
 
-    /// <summary>
-    /// 是否碰到右邊牆壁，是打勾，否取消打勾
-    /// </summary>
-    public bool wallRight;
-    public bool wallLeft;
-    public bool wallBottom;
 
     /// <summary>
     /// 設定牆壁檢查
@@ -114,6 +151,19 @@ public class Tetris : MonoBehaviour
             wallLeft = false;
         }
 
+        
+        //旋轉判定
+        RaycastHit2D hitRotateR = Physics2D.Raycast(transform.position, Vector3.right, lengthRotateR, 1 << 8);
+        RaycastHit2D hitRotateL = Physics2D.Raycast(transform.position, -Vector3.right, lengthRotateL, 1 << 8);
+        if(hitRotateR && hitRotateR.transform.name == "wall_R"|| hitRotateL && hitRotateL.transform.name == "wall_L")
+        {
+            canRotate = false;
+        }
+        else
+        {
+            canRotate = true;
+        }
+
         RaycastHit2D hitb = Physics2D.Raycast(transform.position, -Vector3.up, lengthdown, 1 << 9);
         if (hitb && hitb.transform.name == "wall_bottom")
         {
@@ -122,6 +172,22 @@ public class Tetris : MonoBehaviour
         else
         {
             wallBottom = false;
+        }
+
+    }
+
+    public void Offset()
+    {
+        //將角度原設定浮點數，去小數點轉換成整數
+        int Z = (int)transform.eulerAngles.z;
+
+        if (Z==90||Z==270)
+        {
+            rect.anchoredPosition -= new Vector2(offsetX, offsetY);
+        }
+        else if (Z == 0 || Z == 180)
+        {
+            rect.anchoredPosition += new Vector2(offsetX, offsetY);
         }
 
     }

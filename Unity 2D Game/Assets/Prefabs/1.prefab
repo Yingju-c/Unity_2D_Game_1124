@@ -149,8 +149,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c59b3207556c846a613f2681b49b66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length0: 0.5
+  length0: 0.6
   length90: 0.5
+  offsetX: 0
+  offsetY: 0
+  lengthRotate0l: 0
+  lengthRotate0r: 0
+  lengthRotate90l: 0
+  lengthRotate90r: 0
   wallRight: 0
   wallLeft: 0
   wallBottom: 0
+  canRotate: 1

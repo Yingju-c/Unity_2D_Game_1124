@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
+
 public class Tetris : MonoBehaviour
 {
+    #region 欄位
     [Header("角度為0或180，線條的長度")]
     public float length0;
     [Header("角度為90或270，線條的長度")]
@@ -44,12 +46,21 @@ public class Tetris : MonoBehaviour
     /// </summary>
     private RectTransform rect;
 
+    [Header("每一顆小方塊的射線長度"), Range(0f, 2f)]
+    public float smallLength = 0.5f;
+
+    #endregion
+
+
+    #region 事件
+
+    
     /// <summary>
     /// ODG為繪製圖飾，繪製一條線讓其判定牆在哪
     /// </summary>
     private void OnDrawGizmos()
     {
-
+        #region 判定牆壁地板
         //將角度原設定浮點數，去小數點轉換成整數
         int Z = (int)transform.eulerAngles.z;
 
@@ -102,7 +113,36 @@ public class Tetris : MonoBehaviour
 
         }
 
+        #endregion
+
+        #region 小方塊判定
+
+        for (int i = 0; i < transform.childCount; i++) //下方射線
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawRay(transform.GetChild(i).position, Vector2.down * smallLength);
+        }
+
+        for (int i = 0; i < transform.childCount; i++) //左方射線
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawRay(transform.GetChild(i).position, Vector2.left * smallLength);
+        }
+
+        for (int i = 0; i < transform.childCount; i++) //右方射線
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawRay(transform.GetChild(i).position, Vector2.right * smallLength);
+        }
+
+        #endregion
+
     }
+
+
+    #endregion
+
+    
 
     private void Start()
     {
@@ -115,6 +155,53 @@ public class Tetris : MonoBehaviour
     private void Update()
     {
         CheckWall();
+        CheckBottom();
+        CheckLeftAndRight();
+    }
+
+    #region 方法
+
+    /// <summary>
+    /// 小方塊底部碰撞
+    /// </summary>
+    public bool smallBottom;
+
+    public bool smallLeft;
+    public bool smallRight;
+
+    /// <summary>
+    /// 設定每小顆的檢查，下方
+    /// </summary>
+    private void CheckBottom()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.GetChild(i).position, Vector3.down, smallLength, 1 << 10);
+            //print(hitR.collider.name);
+            if (hit && hit.collider.name == "方塊") smallBottom = true;
+        }
+    }
+
+    /// <summary>
+    /// 設定每小顆的檢查，左右
+    /// </summary>
+    private void CheckLeftAndRight()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.GetChild(i).position, Vector3.left, smallLength, 1 << 10);
+            //print(hitR.collider.name);
+            if (hit && hit.collider.name == "方塊") smallLeft = true;
+            else smallRight = false;
+        }
+        for (int i = 0; i < length; i++)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.GetChild(i).position, Vector3.right, smallLength, 1 << 10);
+            //print(hitR.collider.name);
+            if (hit && hit.collider.name == "方塊") smallRight = true;
+            else smallRight = false;
+
+        }        
     }
 
 
@@ -191,5 +278,7 @@ public class Tetris : MonoBehaviour
         }
 
     }
+
+    #endregion
 
 }

@@ -1,5 +1,7 @@
 ﻿using System.Collections; //引用系統.集合API-協同程序
 using System.Collections.Generic;
+using System.Linq; //查詢語言
+using UnityEngine.UI; //引用介面
 using UnityEngine;
 
 
@@ -103,7 +105,7 @@ public class TetrisManager : MonoBehaviour
             //右邊範圍限制：以座標控制
             //if (currentTetris.anchoredPosition.x < 190)
             //改成 如果 目前俄羅斯方塊 沒有 碰到右邊牆壁，!為沒有
-            if(!tetris.wallRight)
+            if(!tetris.wallRight&&!tetris.smallRight)
             {
                 //按下鍵盤D或右，往右50，||代表或者
                 if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
@@ -116,7 +118,7 @@ public class TetrisManager : MonoBehaviour
             //左邊範圍限制
             //if(currentTetris.anchoredPosition.x > -190)
             //改成 如果 目前俄羅斯方塊 沒有 碰到右邊牆壁，!為沒有
-            if (!tetris.wallLeft)
+            if (!tetris.wallLeft && !tetris.smallLeft)
             {
                 //按下鍵盤A或左，往左50
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
@@ -158,7 +160,11 @@ public class TetrisManager : MonoBehaviour
             //如果俄羅斯方塊 碰到了地板 就重新開始 生成下一顆 ||或者 碰到其他方塊
             if(tetris.wallBottom||tetris.smallBottom)
             {
-                SetGround(); //設為方塊
+                //SetGround(); //設為方塊
+                //StartCoroutine(SetGrounddelay());
+                SetGround();
+                CheckTetris();
+                //StartCoroutine(StartGamedelay());
                 StartGame(); //生成下一顆
                 StartCoroutine(ShakeEffect()); //晃動效果
             }
@@ -166,6 +172,11 @@ public class TetrisManager : MonoBehaviour
         }
 
     }
+
+   /* private IEnumerator SetGrounddelay()
+    {
+        yield return new WaitForSeconds(5f); //為搭配掉落時間
+    }*/
 
     private void SetGround() //把子物件在碰地後設為方塊
     {
@@ -184,6 +195,12 @@ public class TetrisManager : MonoBehaviour
             currentTetris.GetChild(i).gameObject.layer = 10;  //圖層改成10
         }
 
+        for (int i = 0; i < count; i++) //把掉下的方塊變成物件包在分數判定區域
+        {
+            currentTetris.GetChild(0).SetParent(traScoreArea);
+        }
+
+        Destroy(currentTetris.gameObject);
     }
 
     private bool down;
@@ -200,6 +217,11 @@ public class TetrisManager : MonoBehaviour
         //語法：下一顆俄羅斯方塊的區域 的子物件轉成遊戲物件 的狀態 打勾
         traNextArea.GetChild(indexNext).gameObject.SetActive(true);
     }
+
+    /*private IEnumerator StartGamedelay()
+    {
+        yield return new WaitForSeconds(0.1f); //為搭配掉落時間
+    }*/
 
     /// <summary>
     /// 開始遊戲
@@ -236,7 +258,6 @@ public class TetrisManager : MonoBehaviour
         currentTetris = current.GetComponent<RectTransform>();
 
     }
-
 
     public void addscores(int Scores)//添加分數
     {
@@ -315,6 +336,46 @@ public class TetrisManager : MonoBehaviour
         
     }
 
+
+    [Header("分數判定區域")]
+    public Transform traScoreArea;
+
+    public RectTransform[] rectSmall;
+
+    /// <summary>
+    /// 檢查方塊是否連線
+    /// </summary>
+    private void CheckTetris()
+    {
+        rectSmall = new RectTransform[traScoreArea.childCount]; //指定數量跟子物件相同
+
+        for (int i = 0; i < traScoreArea.childCount; i++)  //利用迴圈將子物件儲存
+        {
+            rectSmall[i] = traScoreArea.GetChild(i).GetComponent<RectTransform>();
+        }
+
+        var small = rectSmall.Where(x => x.anchoredPosition.y == -190); //檢查有幾顆位置在同列
+        print(small.ToArray().Length);
+
+        if (small.ToArray().Length==16)
+        {
+
+        }
+
+    }
+
+    private IEnumerable Shine(RectTransform[] smalls)
+    {
+        float interval = 0.05f;
+        for (int i = 0; i < 12; i++) smalls[i].GetComponent<Image>().enabled = false;
+        yield return new WaitForSeconds (interval);
+        for (int i = 0; i < 12; i++) smalls[i].GetComponent<Image>().enabled = true;
+        yield return new WaitForSeconds(interval);
+        for (int i = 0; i < 12; i++) smalls[i].GetComponent<Image>().enabled = false;
+        yield return new WaitForSeconds(interval);
+        for (int i = 0; i < 12; i++) smalls[i].GetComponent<Image>().enabled = true;
+
+    }
 
 }
 

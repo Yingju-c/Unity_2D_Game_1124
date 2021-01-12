@@ -5915,7 +5915,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 999999
+  m_Text: 0
 --- !u!222 &651686368
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7676,7 +7676,12 @@ MonoBehaviour:
   - {x: 0, y: 224}
   - {x: 0, y: 224}
   - {x: 0, y: 260}
+  textScore: {fileID: 651686367}
+  textLv: {fileID: 1480125653}
   traScoreArea: {fileID: 978345784}
+  rectSmall: []
+  destoryRow: 000000000000000000000000
+  downHeight: []
 --- !u!4 &905798788
 Transform:
   m_ObjectHideFlags: 0
@@ -11476,7 +11481,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 999
+  m_Text: 1
 --- !u!222 &1480125654
 CanvasRenderer:
   m_ObjectHideFlags: 0

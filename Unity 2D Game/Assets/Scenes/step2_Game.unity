@@ -1304,7 +1304,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Current Scores:99999
+  m_Text: 
 --- !u!222 &114975668
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7635,6 +7635,7 @@ GameObject:
   m_Component:
   - component: {fileID: 905798788}
   - component: {fileID: 905798787}
+  - component: {fileID: 905798789}
   m_Layer: 0
   m_Name: TetrisManager
   m_TagString: Untagged
@@ -7654,15 +7655,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4102ef980270d644a83fd45d4c4b9727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  falltime: 1.5
+  falltime: 3
   scores: 0
   bestscores: 0
   Level: 1
-  goend: {fileID: 0}
-  brickdropsound: {fileID: 0}
-  movedsound: {fileID: 0}
-  removedsound: {fileID: 0}
-  gameoversound: {fileID: 0}
+  goend: {fileID: 1700971350}
+  fallsound: {fileID: 8300000, guid: 163fdd30614b8ab428d4c86740eef7be, type: 3}
+  movedsound: {fileID: 8300000, guid: ccfba7da24ae8eb458cb5f4d3d79d058, type: 3}
+  rotatesound: {fileID: 8300000, guid: d526e7791c5e12e43b85dbc8af2c4ea5, type: 3}
+  removedsound: {fileID: 8300000, guid: 0412933befadc1243911197ab029454a, type: 3}
+  gameoversound: {fileID: 8300000, guid: d10765063fa0ac24aa5ec0d1241e0d92, type: 3}
   traNextArea: {fileID: 12147502}
   traTetrisParent: {fileID: 1603356965}
   posSpawn:
@@ -7678,6 +7680,8 @@ MonoBehaviour:
   - {x: 0, y: 260}
   textScore: {fileID: 651686367}
   textLv: {fileID: 1480125653}
+  textCurrent: {fileID: 114975667}
+  textHeight: {fileID: 1446054904}
   traScoreArea: {fileID: 978345784}
   rectSmall: []
   destoryRow: 000000000000000000000000
@@ -7696,6 +7700,102 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &905798789
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905798786}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &917662490
 GameObject:
   m_ObjectHideFlags: 0
@@ -8769,6 +8869,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 8300000, guid: 9c7da21ef5a77cf41a5aa98d187197e6,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 905798787}
+        m_MethodName: leavegame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -11112,7 +11223,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Best Scores:99999
+  m_Text: 
 --- !u!222 &1446054905
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11579,6 +11690,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 8300000, guid: 9c7da21ef5a77cf41a5aa98d187197e6,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 905798787}
+        m_MethodName: restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

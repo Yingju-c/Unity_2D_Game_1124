@@ -55,7 +55,41 @@ public class Tetris : MonoBehaviour
 
     #region 事件
 
-    
+
+    private void settingLength()
+    {
+        #region 判定牆壁地板
+        //將角度原設定浮點數，去小數點轉換成整數
+        int Z = (int)transform.eulerAngles.z;
+
+        //因應不同角度的方塊，會有不同長度的線條以做判定
+        if (Z == 0 || Z == 180)
+        {
+            length = length0;//左右線條的初始值，是角度0的長度
+
+            lengthdown = length90;//向下的初始值，是角度90的長度
+
+            //設定旋轉
+            lengthRotateL = lengthRotate0l;
+            lengthRotateR = lengthRotate0r;
+
+        }
+
+        else if (Z == 90 || Z == 270)
+        {
+            length = length90;//左右線條的初始值，是角度90的長度
+
+            lengthdown = length0;//向下的初始值，是角度0的長度
+           
+            //設定旋轉
+            lengthRotateL = lengthRotate90l;
+            lengthRotateR = lengthRotate90r;
+            
+        }
+
+        #endregion
+    }
+
     /// <summary>
     /// ODG為繪製圖飾，繪製一條線讓其判定牆在哪
     /// </summary>
@@ -155,6 +189,7 @@ public class Tetris : MonoBehaviour
 
         smallRightAll = new bool[transform.childCount]; //用陣列寫
         smallLeftAll = new bool[transform.childCount]; //用陣列寫
+        
     }
 
     private void Update()
@@ -162,6 +197,8 @@ public class Tetris : MonoBehaviour
         CheckWall();
         CheckBottom();
         CheckLeftAndRight();
+
+        settingLength();
     }
 
     #region 方法
